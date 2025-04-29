@@ -1,15 +1,13 @@
 //Importart a biblioteca Express
-import express, {Request, Response} from "express";		
-//Importar arquivo com as credenciais do Banco
-import { AppDataSource } from "./data-source";		
+import express, {Request, Response} from "express";				
 //Criar a aplicação Express
 const app = express();
-//inicializar a conexão com o Banco
-AppDataSource.initialize()
-.then(() => {
-    console.log("Conexão com o banco de dados realizada com sucesso!");
-})
-.catch((error) => console.log("Erro na conexão com o banco de dados: ", error));
+//Criar o middleware para receber os dados no corpo da requisição
+app.use(express.json());
+//Importar a Controller
+import UsersController from "./controllers/UsersController";
+//Criar a rota
+app.use('/', UsersController);
 //Criar a rota principal "Get"
     app.get("/", (req: Request, res: Response) => {
         res.send("Bem-vindo!");
