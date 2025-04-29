@@ -6,6 +6,25 @@ import { AppDataSource } from "../data-source";
 import { User } from "../entity/User";
 //Criar a aplicação Express
 const router = express.Router();
+
+//Criar a rota listar usuários
+router.get("/users", async (req: Request, res: Response) => {
+    try {
+        //Criar uma instância do repositório
+        const userRepository = AppDataSource.getRepository(User);
+        //Recupera todos os usuários do Banco de dados
+        const users = await userRepository.find();
+        //Retornar os usuários como resposta
+        res.status(200).json(users);
+        return;
+    } catch (error) {
+        res.status(500).json({
+            message: "Erro ao listar os usuários!"
+        });
+        return;
+    }
+});
+
 //Criar a rota cadastrar usuário
 router.post("/users", async (req: Request, res: Response) => {
     try{
