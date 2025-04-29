@@ -7,6 +7,36 @@ import { User } from "../entity/User";
 //Criar a aplicação Express
 const router = express.Router();
 
+//Criar a rota para visualizar detalhes do usuário
+router.get("/users/:id", async (req: Request, res: Response) =>{
+    try {
+        //Obter o id do usuário a partir dos parâmetros da requisição
+        const { id } = req.params;
+        //Obter o repositório da entidade User
+        const userRepository = AppDataSource.getRepository(User);
+        //Buscar o usuário no banco de dados pelo ID
+        const user = await userRepository.findOneBy({ id: parseInt(id) });
+        //Verificar se o usuário foi encontrado
+        if(!user){
+            res.status(404).json({
+                message: "Usuário não encontrado!!"
+            });
+            return;
+        }
+        //Retorna o usuário encontrado
+        res.status(200).json({
+            user: user
+        });
+        return;
+
+    } catch (error) {
+        res.status(500).json({
+            message: "Erro ao visualizar o usuário!"
+        });
+        return;
+    }
+});
+
 //Criar a rota listar usuários
 router.get("/users", async (req: Request, res: Response) => {
     try {
