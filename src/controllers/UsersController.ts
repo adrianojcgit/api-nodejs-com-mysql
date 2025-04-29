@@ -32,7 +32,7 @@ router.post("/users", async (req: Request, res: Response) => {
         });
     }catch(error){
         res.status(500).json({
-            message: "Erro ao cadastrar usuário!",
+            message: "Erro ao cadastrar usuário!" + error,
         });
     }
     res.send("Cadastrar");
