@@ -8,6 +8,36 @@ import { Not } from "typeorm";
 //Criar a aplicação Express
 const router = express.Router();
 
+//Criar rota excluir usuário
+router.delete("/users/:id", async (req: Request, res: Response) => {
+    try {
+        //Obter o id do usuário a partir dos parâmetros da requisição
+        const { id } = req.params;
+        //Criar uma instância do repositório user
+        const userRepository = AppDataSource.getRepository(User);
+        //Recuperar o registro do banco de dados com o valor da coluna email
+        const user = await userRepository.findOneBy({ id: parseInt(id)});
+        //Verficar se já existe usuário cadastrado com esse e-mail
+        if (!user) {
+            res.status(404).json({
+                message: "Usuário não encontrado!",
+            });
+            return;
+        }
+        //Remove registro
+        await userRepository.remove(user);
+
+        res.status(200).json({
+            message: "Usuário excluído com  sucesso!"
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            message: "Erro ao excluir usuário!"
+        });
+    }
+});
+
 //Criar para editar usuário
 router.put("/users/:id", async (req: Request, res: Response) =>{
     try {
