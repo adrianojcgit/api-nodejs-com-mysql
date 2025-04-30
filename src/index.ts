@@ -1,9 +1,11 @@
 //Importart a biblioteca Express
-import express, {Request, Response} from "express";				
+import express, {Request, Response} from "express";	
+import cors from "cors"			
 //Criar a aplicação Express
 const app = express();
 //Criar o middleware para receber os dados no corpo da requisição
 app.use(express.json());
+app.use(cors());
 //Importar a Controller
 import UsersController from "./controllers/UsersController";
 //Criar a rota
